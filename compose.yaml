@@ -1,0 +1,27 @@
+﻿services:
+  cargogatewayapi:
+    build:
+      context: ./CargoGateway.API
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - CONNECTION_STRING=Host=db;Port=5432;Database=cargogateway;Username=postgres;Password=1234
+
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: cargogateway
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data: 
