@@ -1,0 +1,20 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  cargogatewayapi:
+    build:
+      context: "C:\\Users\\Ilya\\RiderProjects\\CargoGateway.API\\CargoGateway.API"
+      dockerfile: "Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/CargoGateway.API.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "cargogateway.api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\Ilya\\RiderProjects\\CargoGateway.API\\CargoGateway.API:/app:rw"
+    - "C:\\Users\\Ilya\\RiderProjects\\CargoGateway.API:/src:rw"
+    - "C:\\Users\\Ilya\\.nuget\\packages:/home/app/.nuget/packages"
+    working_dir: "/app"

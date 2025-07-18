@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "0TSf786NJf8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ilya\\RiderProjects\\CargoGateway.API\\CargoGateway.Core\\CargoGateway.Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ilya\\.nuget\\packages\\cargo.libraries.logistics.models.001.0105.test\\1.0.0\\cargo.libraries.logistics.models.001.0105.test.1.0.0.nupkg.sha512",
+    "C:\\Users\\Ilya\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\9.0.7\\microsoft.aspnetcore.jsonpatch.9.0.7.nupkg.sha512",
+    "C:\\Users\\Ilya\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\9.0.7\\microsoft.aspnetcore.mvc.newtonsoftjson.9.0.7.nupkg.sha512",
+    "C:\\Users\\Ilya\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
+    "C:\\Users\\Ilya\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Ilya\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
