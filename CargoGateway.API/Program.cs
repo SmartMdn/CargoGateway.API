@@ -1,30 +1,48 @@
-using CargoGateway.API.Persistence;
-using CargoGateway.API.Services;
+using CargoGateway.Core.Extensions;
+using CargoGateway.Infrastructure.Extensions;
+using CargoGateway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString =  Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
-                        builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrWhiteSpace(connectionString))
-{
-    throw new InvalidOperationException("Connection string for PostgreSQL not found in environment variables.");
-}
+// Добавляем Newtonsoft.Json для контроллеров
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options => 
+    {
+        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.IsoDateTimeConverter());
+        
+    });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
+// Регистрация сервисов
+builder.Services
+    .AddCoreServices()
+    .AddInfrastructure(builder.Configuration);
 
-builder.Services.AddHttpClient<CargoService>(client =>
+// Логирование
+builder.Services.AddLogging(logging => 
 {
-    client.BaseAddress = new Uri("http://localhost:5002/"); //for localhost deployment
-    //client.BaseAddress = new Uri("http://fakeapi/"); // for docker deployment
+    logging.AddConsole();
+    logging.AddDebug();
 });
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-app.MapControllers();
+// Автоматические миграции
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating the database");
+    }
+}
 
+app.MapControllers();
 app.Run();

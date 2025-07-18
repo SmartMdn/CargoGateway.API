@@ -1,26 +1,20 @@
-﻿using CargoGateway.API.Models;
-using CargoGateway.API.Services;
+﻿using CargoGateway.Core.Interfaces;
+using CargoGateway.Core.Models;
+using CargoGateway.Core.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CargoGateway.API.Controllers;
 
 [ApiController]
 [Route("availability")]
-public class AvailabilityController : ControllerBase
+public class AvailabilityController(ICargoService cargoService) : ControllerBase
 {
-    private readonly CargoService _cargoService;
-    
-    public AvailabilityController(CargoService cargoService)
-    {
-        _cargoService = cargoService;
-    }
-
     [HttpPost]
     public async Task<IActionResult> SearchAvailability([FromBody] AvailabilitySearchRequest request)
     {
         try
         {
-            var result = await _cargoService.SearchAsync(request);
+            var result = await cargoService.SearchAsync(request);
             return Ok(result);
         }
         catch (Exception e)
