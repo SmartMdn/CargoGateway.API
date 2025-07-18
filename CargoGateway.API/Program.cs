@@ -1,5 +1,5 @@
-using CargoGateway.API.Persistence;
-using CargoGateway.API.Services;
+using CargoGateway.Core.Interfaces;
+using CargoGateway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +14,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddHttpClient<CargoService>(client =>
+builder.Services.AddHttpClient<ICargoService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5002/"); //for localhost deployment
     //client.BaseAddress = new Uri("http://fakeapi/"); // for docker deployment

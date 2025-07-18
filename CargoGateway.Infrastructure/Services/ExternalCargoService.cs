@@ -1,39 +1,25 @@
-﻿using Cargo.Libraries.Logistics.Models.DTO;
+﻿using System.Net.Http.Json;
 using Cargo.Libraries.Logistics.Models.Entities;
-using CargoGateway.API.Models;
-using CargoGateway.API.Persistence;
+using CargoGateway.Core.Interfaces;
+using CargoGateway.Core.Models;
+using CargoGateway.Infrastructure.Persistence.Repositories;
 
-namespace CargoGateway.API.Services;
+namespace CargoGateway.Infrastructure.Services;
 
-public class CargoService
+public class ExternalCargoService(HttpClient httpClient, SearchRepository repository) : ICargoService
 {
-    private readonly HttpClient _httpClient;
-    private readonly ApplicationDbContext _db;
-    private readonly ILogger<CargoService> _logger;
-
-    public CargoService(HttpClient httpClient, ApplicationDbContext db, ILogger<CargoService> logger)
-    {
-        _httpClient = httpClient;
-        _db = db;
-        _logger = logger;
-    }
-
     public async Task<AvailabilityResponseModel> SearchAsync(AvailabilitySearchRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync("availability/search", request);
+        var response = await httpClient.PostAsJsonAsync("availability/search", request);
         
         if (!response.IsSuccessStatusCode)
             throw new Exception("Failed to search for cargo availability.");
-        var rawJson = await response.Content.ReadAsStringAsync();
-        // Временно залогируйте или выведите rawJson в консоль/лог
-        _logger.LogInformation("Raw JSON: {RawJson}", rawJson);
-
+        
         var availability = await response.Content.ReadFromJsonAsync<AvailabilityResponseModel>();
         if (availability is null)
-            throw new Exception($"Failed to deserialize cargo availability. Raw response: {rawJson}");
-       
+            throw new Exception("Failed to deserialize cargo availability.");
         
-        var search = new SearchEntity
+        var searchEntity = new SearchEntity
         {
             Id = Guid.NewGuid(),
             From = request.From,
@@ -58,10 +44,8 @@ public class CargoService
                 }).ToList()
             }).ToList()
         };
-        
-        _db.SearchEntities.Add(search);
-        await _db.SaveChangesAsync();
-        
+
+        await repository.AddSearchResultAsync(searchEntity);
         return availability;
     }
 }

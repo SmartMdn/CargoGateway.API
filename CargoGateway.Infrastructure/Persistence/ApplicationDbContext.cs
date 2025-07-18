@@ -1,7 +1,7 @@
 ﻿using Cargo.Libraries.Logistics.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CargoGateway.API.Persistence;
+namespace CargoGateway.Infrastructure.Persistence;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
