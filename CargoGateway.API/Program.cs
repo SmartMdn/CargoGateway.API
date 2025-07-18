@@ -1,30 +1,25 @@
-using CargoGateway.Core.Interfaces;
+using CargoGateway.Core.Extensions;
+using CargoGateway.Infrastructure.Extensions;
 using CargoGateway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString =  Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
-                        builder.Configuration.GetConnectionString("DefaultConnection");
-if (string.IsNullOrWhiteSpace(connectionString))
-{
-    throw new InvalidOperationException("Connection string for PostgreSQL not found in environment variables.");
-}
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(connectionString));
-
-builder.Services.AddHttpClient<ICargoService>(client =>
-{
-    client.BaseAddress = new Uri("http://localhost:5002/"); //for localhost deployment
-    //client.BaseAddress = new Uri("http://fakeapi/"); // for docker deployment
-});
+builder.Services
+    .AddCoreServices()       // Из Core
+    .AddInfrastructure(builder.Configuration); // Из Infrastructure
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-app.MapControllers();
+// Автоматическое применение миграций
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
+app.MapControllers();
 app.Run();

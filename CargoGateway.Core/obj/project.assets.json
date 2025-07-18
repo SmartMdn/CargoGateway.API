@@ -2,7 +2,7 @@
   "version": 3,
   "targets": {
     "net9.0": {
-      "Cargo.Libraries.Logistics.Models.001.0105.Test/1.0.0": {
+      "Cargo.Libraries.Logistics.Models.001.0105.Test/1.0.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "9.0.7"
@@ -93,14 +93,14 @@
     }
   },
   "libraries": {
-    "Cargo.Libraries.Logistics.Models.001.0105.Test/1.0.0": {
-      "sha512": "U8Ih4qxbDNY6OMRQ/pSJWGBrR4GwBPQy+b3fuqkyt+Ox8u7mtY4dKe/xoDH/22v3FVbd6sQLD/Xa/WUHJTOZ0Q==",
+    "Cargo.Libraries.Logistics.Models.001.0105.Test/1.0.1": {
+      "sha512": "bdfp6kgeCj4d84n/8ltPTK3xZDgx5mmq7S5eA2j/+gEagi/Fc90zYQ1XG4FKZH0+vOFWU7anbUYpqn9QOE3+kQ==",
       "type": "package",
-      "path": "cargo.libraries.logistics.models.001.0105.test/1.0.0",
+      "path": "cargo.libraries.logistics.models.001.0105.test/1.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "cargo.libraries.logistics.models.001.0105.test.1.0.0.nupkg.sha512",
+        "cargo.libraries.logistics.models.001.0105.test.1.0.1.nupkg.sha512",
         "cargo.libraries.logistics.models.001.0105.test.nuspec",
         "lib/net9.0/Cargo.Libraries.Logistics.Models.dll"
       ]
@@ -263,7 +263,7 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Cargo.Libraries.Logistics.Models.001.0105.Test >= 1.0.0",
+      "Cargo.Libraries.Logistics.Models.001.0105.Test >= 1.0.1",
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
@@ -313,7 +313,7 @@
         "dependencies": {
           "Cargo.Libraries.Logistics.Models.001.0105.Test": {
             "target": "Package",
-            "version": "[1.0.0, )"
+            "version": "[1.0.1, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",

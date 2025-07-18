@@ -47,7 +47,7 @@
           "dependencies": {
             "Cargo.Libraries.Logistics.Models.001.0105.Test": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[1.0.1, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

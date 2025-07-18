@@ -1036,7 +1036,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
-          "Cargo.Libraries.Logistics.Models.001.0105.Test": "1.0.0",
+          "Cargo.Libraries.Logistics.Models.001.0105.Test": "1.0.1",
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {

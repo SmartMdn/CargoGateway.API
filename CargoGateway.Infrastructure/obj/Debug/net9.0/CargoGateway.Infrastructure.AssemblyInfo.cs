@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CargoGateway.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+650339bf92c2589a2f887fd607dabd16be58d550")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c9e5229f4ab11a385de6908add83e760cf8d15c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CargoGateway.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CargoGateway.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
