@@ -1,5 +1,7 @@
 ﻿using Cargo.Libraries.Logistics.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using CargoGateway.Infrastructure.Persistence.Converters;
 
 namespace CargoGateway.Infrastructure.Persistence;
 
@@ -12,6 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         modelBuilder.UseSerialColumns();
         modelBuilder.Entity<SearchEntity>(entity =>
         {

@@ -1,4 +1,5 @@
 ﻿using CargoGateway.Core.Models;
+using CargoGateway.Core.Models.Request;
 
 namespace CargoGateway.Core.Interfaces;
 

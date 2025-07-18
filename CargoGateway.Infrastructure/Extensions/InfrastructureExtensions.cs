@@ -10,10 +10,12 @@ namespace CargoGateway.Infrastructure.Extensions;
 
 public static class InfrastructureExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services, 
+        IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection") 
-                               ?? Environment.GetEnvironmentVariable("CONNECTION_STRING")
+                               ?? Environment.GetEnvironmentVariable("CONNECTION_STRING") 
                                ?? throw new InvalidOperationException("Connection string not found");
 
         // Регистрация DbContext
@@ -23,11 +25,12 @@ public static class InfrastructureExtensions
         // Регистрация репозитория
         services.AddScoped<ISearchRepository, SearchRepository>();
         
-        // Регистрация HttpClient с настройкой базового адреса
-        services.AddHttpClient<ICargoService, ExternalCargoService>(client => 
+        // Регистрация HttpClient
+        services.AddHttpClient<ICargoService, ExternalCargoService>((provider, client) => 
         {
-            client.BaseAddress = new Uri(configuration["CargoApi:BaseUrl"] 
-                                         ?? "http://localhost:5002/");
+            var config = provider.GetRequiredService<IConfiguration>();
+            client.BaseAddress = new Uri(config["CargoApi:BaseUrl"] ?? "http://localhost:5002/");
+            client.Timeout = TimeSpan.FromSeconds(30);
         });
         
         return services;

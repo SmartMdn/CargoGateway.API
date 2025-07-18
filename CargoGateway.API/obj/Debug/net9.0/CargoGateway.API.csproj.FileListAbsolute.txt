@@ -62,7 +62,6 @@ C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\S
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\System.Composition.Hosting.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\System.Composition.Runtime.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\System.Composition.TypedParts.dll
-C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\System.Text.Json.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.resources.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -130,3 +129,11 @@ C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\z
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\Cargo.Libraries.Logistics.Models.dll
 C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\obj\Debug\net9.0\CargoGateway.API.sourcelink.json
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\CargoGateway.Core.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\CargoGateway.Infrastructure.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\CargoGateway.Core.pdb
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.API\bin\Debug\net9.0\CargoGateway.Infrastructure.pdb

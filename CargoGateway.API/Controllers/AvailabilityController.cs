@@ -1,5 +1,6 @@
 ﻿using CargoGateway.Core.Interfaces;
 using CargoGateway.Core.Models;
+using CargoGateway.Core.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CargoGateway.API.Controllers;
