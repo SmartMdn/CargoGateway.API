@@ -1,0 +1,13 @@
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\bin\Debug\net9.0\CargoGateway.Core.deps.json
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\bin\Debug\net9.0\CargoGateway.Core.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\bin\Debug\net9.0\CargoGateway.Core.pdb
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.csproj.AssemblyReference.cache
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.AssemblyInfoInputs.cache
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.AssemblyInfo.cs
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.csproj.CoreCompileInputs.cache
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.sourcelink.json
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\refint\CargoGateway.Core.dll
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\CargoGateway.Core.pdb
+C:\Users\Ilya\RiderProjects\CargoGateway.API\CargoGateway.Core\obj\Debug\net9.0\ref\CargoGateway.Core.dll
