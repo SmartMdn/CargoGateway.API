@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Cargo.Libraries.Logistics.Models.001.0105.Test" Version="1.0.1" />
+      <PackageReference Include="Cargo.Libraries.Logistics.Models.001.0105.Test" Version="1.0.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
         <Reference Include="Cargo.Libraries.Logistics.Models">

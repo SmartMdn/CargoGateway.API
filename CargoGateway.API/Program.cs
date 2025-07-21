@@ -6,7 +6,6 @@ using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем Newtonsoft.Json для контроллеров
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options => 
     {
@@ -15,12 +14,10 @@ builder.Services.AddControllers()
         
     });
 
-// Регистрация сервисов
 builder.Services
     .AddCoreServices()
     .AddInfrastructure(builder.Configuration);
 
-// Логирование
 builder.Services.AddLogging(logging => 
 {
     logging.AddConsole();
@@ -29,7 +26,6 @@ builder.Services.AddLogging(logging =>
 
 var app = builder.Build();
 
-// Автоматические миграции
 using (var scope = app.Services.CreateScope())
 {
     try

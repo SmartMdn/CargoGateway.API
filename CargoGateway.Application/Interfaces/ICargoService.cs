@@ -1,5 +1,4 @@
-﻿using CargoGateway.Core.Models;
-using CargoGateway.Core.Models.Request;
+﻿using CargoGateway.Core.DTO;
 
 namespace CargoGateway.Core.Interfaces;
 

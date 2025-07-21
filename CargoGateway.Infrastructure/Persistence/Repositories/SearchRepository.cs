@@ -1,4 +1,5 @@
 ﻿using Cargo.Libraries.Logistics.Models.Entities;
+using Cargo.Libraries.Logistics.Models.Interfaces;
 using CargoGateway.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,6 @@ public class SearchRepository(ApplicationDbContext db) : ISearchRepository
                 s.From == from && 
                 s.To == to && 
                 s.Date == date && 
-                s.CreatedAtUtc >= cutoffTime);
+                s.CreatedAtUtc <= cutoffTime);
     }
 }
