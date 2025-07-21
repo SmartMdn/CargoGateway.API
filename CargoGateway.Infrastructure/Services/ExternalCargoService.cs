@@ -1,34 +1,37 @@
 ﻿using System.Net.Http.Json;
 using Cargo.Libraries.Logistics.Models.Entities;
+using Cargo.Libraries.Logistics.Models.Interfaces;
+using CargoGateway.Core.DTO;
 using Newtonsoft.Json;
 using CargoGateway.Core.Exceptions;
 using CargoGateway.Core.Interfaces;
-using CargoGateway.Core.Models;
-using CargoGateway.Core.Models.Request;
 using Microsoft.Extensions.Logging;
 
 namespace CargoGateway.Infrastructure.Services;
 
-public class ExternalCargoService : ICargoService
+public class ExternalCargoService(HttpClient httpClient, ISearchRepository repository, ILogger<ExternalCargoService> logger) : ICargoService
 {
-    private readonly HttpClient _httpClient;
-    private readonly ISearchRepository _repository;
-    private readonly ILogger<ExternalCargoService> _logger;
-    
-    public ExternalCargoService(
-        HttpClient httpClient, 
-        ISearchRepository repository,
-        ILogger<ExternalCargoService> logger)
-    {
-        _httpClient = httpClient;
-        _repository = repository;
-        _logger = logger;
-    }
+    // Настройка времени жизни кэша - данные актуальны в течение 15 минут
+    private static readonly TimeSpan CacheMaxAge = TimeSpan.FromMinutes(15);
 
     public async Task<AvailabilityResponseModel> SearchAsync(AvailabilitySearchRequest request)
     {
-        _logger.LogInformation("Sending request to external cargo service...");
-        var response = await _httpClient.PostAsJsonAsync("availability/search", new 
+        // Сначала проверяем кэш в базе данных
+        logger.LogInformation("Checking cache for search: {From} -> {To} on {Date}", 
+            request.From, request.To, request.DateString);
+        
+        var cachedResult = await repository.FindRecentSearchAsync(
+            request.From, request.To, request.Date, CacheMaxAge);
+        
+        if (cachedResult != null)
+        {
+            logger.LogInformation("Cache hit! Found recent search result from {CreatedAt}", 
+                cachedResult.CreatedAtUtc);
+            return MapToResponseModel(cachedResult);
+        }
+        
+        logger.LogInformation("Cache miss. Sending request to external cargo service...");
+        var response = await httpClient.PostAsJsonAsync("availability/search", new 
         {
             from = request.From,
             to = request.To,
@@ -38,13 +41,13 @@ public class ExternalCargoService : ICargoService
         if (!response.IsSuccessStatusCode)
         {
             var errorContent = await response.Content.ReadAsStringAsync();
-            _logger.LogError("API error: {StatusCode} - {Content}", response.StatusCode, errorContent);
+            logger.LogError("API error: {StatusCode} - {Content}", response.StatusCode, errorContent);
             throw new CargoServiceException(
                 $"Failed to search for cargo availability. Status: {response.StatusCode}");
         }
         
         var content = await response.Content.ReadAsStringAsync();
-        _logger.LogDebug("Received response: {Content}", content);
+        logger.LogDebug("Received response: {Content}", content);
         
         if (string.IsNullOrWhiteSpace(content))
             throw new CargoServiceException("Empty response from cargo service");
@@ -56,14 +59,14 @@ public class ExternalCargoService : ICargoService
                 throw new CargoServiceException("Deserialization returned null object");
             if (availability.Shipments == null)
                 throw new CargoServiceException("Deserialized object has null Shipments collection");
-            _logger.LogInformation("Successfully deserialized {Count} shipments", availability.Shipments.Count);
+            logger.LogInformation("Successfully deserialized {Count} shipments", availability.Shipments.Count);
             var searchEntity = MapToSearchEntity(request, availability);
-            await _repository.AddSearchResultAsync(searchEntity);
+            await repository.AddSearchResultAsync(searchEntity);
             return availability;
         }
         catch (JsonException ex)
         {
-            _logger.LogError(ex, "JSON deserialization error: {Message}", ex.Message);
+            logger.LogError(ex, "JSON deserialization error: {Message}", ex.Message);
             throw new CargoServiceException($"JSON error: {ex.Message}\nResponse: {content}", ex);
         }
     }
@@ -86,6 +89,28 @@ public class ExternalCargoService : ICargoService
                 Legs = sh.Legs.Select(leg => new LegEntity
                 {
                     Id = Guid.NewGuid(),
+                    DepartureLocation = leg.DepartureLocation,
+                    ArrivalLocation = leg.ArrivalLocation,
+                    DepartureDate = leg.DepartureDate,
+                    DepartureTime = leg.DepartureTime,
+                    ArrivalDate = leg.ArrivalDate,
+                    ArrivalTime = leg.ArrivalTime
+                }).ToList()
+            }).ToList()
+        };
+    }
+
+    private static AvailabilityResponseModel MapToResponseModel(SearchEntity searchEntity)
+    {
+        return new AvailabilityResponseModel
+        {
+            Shipments = searchEntity.Shipments.Select(sh => new Shipment
+            {
+                CarrierCode = sh.CarrierCode,
+                FlightNumber = sh.FlightNumber,
+                CargoType = sh.CargoType,
+                Legs = sh.Legs.Select(leg => new Leg
+                {
                     DepartureLocation = leg.DepartureLocation,
                     ArrivalLocation = leg.ArrivalLocation,
                     DepartureDate = leg.DepartureDate,

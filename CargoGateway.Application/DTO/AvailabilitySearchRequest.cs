@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace CargoGateway.Core.Models.Request;
+namespace CargoGateway.Core.DTO;
 
 public class AvailabilitySearchRequest
 {

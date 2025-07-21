@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CargoGateway.Core\CargoGateway.Core.csproj" />
+      <ProjectReference Include="..\CargoGateway.Application\CargoGateway.Application.csproj" />
       <ProjectReference Include="..\CargoGateway.Infrastructure\CargoGateway.Infrastructure.csproj" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.API", "CargoGateway.API\CargoGateway.API.csproj", "{2041B285-DD19-47D4-BBC6-9B9D78614DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.Core", "CargoGateway.Core\CargoGateway.Core.csproj", "{34B86CA8-01BC-4432-9721-EE1E8654D570}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.Application", "CargoGateway.Application\CargoGateway.Application.csproj", "{34B86CA8-01BC-4432-9721-EE1E8654D570}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.Infrastructure", "CargoGateway.Infrastructure\CargoGateway.Infrastructure.csproj", "{C4CDFD26-8969-456B-BC49-B1763072310D}"
 EndProject
