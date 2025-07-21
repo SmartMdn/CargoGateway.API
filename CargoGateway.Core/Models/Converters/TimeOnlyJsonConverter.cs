@@ -14,12 +14,12 @@ namespace CargoGateway.Core.Models.Converters
 
         public override TimeOnly ReadJson(JsonReader reader, Type objectType, TimeOnly existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
-            if (reader.TokenType == JsonToken.String && reader.Value is string str)
+            if (reader is { TokenType: JsonToken.String, Value: string str })
             {
                 if (TimeOnly.TryParse(str, out var time))
                     return time;
             }
-            if (reader.TokenType == JsonToken.Date && reader.Value is DateTime dt)
+            if (reader is { TokenType: JsonToken.Date, Value: DateTime dt })
             {
                 return TimeOnly.FromDateTime(dt);
             }
