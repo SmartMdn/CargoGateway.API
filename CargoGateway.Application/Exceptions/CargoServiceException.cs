@@ -1,4 +1,4 @@
-﻿namespace CargoGateway.Core.Exceptions;
+﻿namespace CargoGateway.Application.Exceptions;
 
 public class CargoServiceException : Exception
 {

@@ -1,5 +1,6 @@
 ﻿using Cargo.Libraries.Logistics.Models.Interfaces;
-using CargoGateway.Core.Interfaces;
+using CargoGateway.Application.Interfaces;
+using CargoGateway.Application.Mapping;
 using CargoGateway.Infrastructure.Persistence;
 using CargoGateway.Infrastructure.Persistence.Repositories;
 using CargoGateway.Infrastructure.Services;

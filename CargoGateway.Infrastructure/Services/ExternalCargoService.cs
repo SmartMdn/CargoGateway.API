@@ -1,7 +1,9 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using Cargo.Libraries.Logistics.Models.Entities;
 using Cargo.Libraries.Logistics.Models.Interfaces;
-using CargoGateway.Core.DTO;
+using CargoGateway.Application.DTO;
+using CargoGateway.Application.Exceptions;
+using CargoGateway.Application.Interfaces;
 using Newtonsoft.Json;
 using CargoGateway.Core.Exceptions;
 using CargoGateway.Core.Interfaces;
