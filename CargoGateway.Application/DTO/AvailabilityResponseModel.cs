@@ -39,7 +39,7 @@ public class Leg
     public DateOnly DepartureDate
     {
         get => DateOnly.Parse(DepartureDateString);
-        set => DepartureDateString = value.ToString("yyyy-MM-dd");
+        init => DepartureDateString = value.ToString("yyyy-MM-dd");
     }
     
     [JsonProperty("departureTime")]
