@@ -1,7 +1,6 @@
 ﻿using Cargo.Libraries.Logistics.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using CargoGateway.Infrastructure.Persistence.Converters;
 
 namespace CargoGateway.Infrastructure.Persistence;
 
