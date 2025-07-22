@@ -1,6 +1,5 @@
 ﻿using Cargo.Libraries.Logistics.Models.Entities;
 using Cargo.Libraries.Logistics.Models.Interfaces;
-using CargoGateway.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CargoGateway.Infrastructure.Persistence.Repositories;

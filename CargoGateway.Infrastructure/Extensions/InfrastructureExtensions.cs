@@ -13,9 +13,7 @@ namespace CargoGateway.Infrastructure.Extensions;
 
 public static class InfrastructureExtensions
 {
-    public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services, 
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection") 
                                ?? Environment.GetEnvironmentVariable("CONNECTION_STRING") 
@@ -25,6 +23,7 @@ public static class InfrastructureExtensions
             options.UseNpgsql(connectionString));
         
         services.AddScoped<ISearchRepository, SearchRepository>();
+        services.AddScoped<ICargoMapper, CargoMapper>();
         
         services.AddHttpClient<ICargoService, ExternalCargoService>((provider, client) => 
         {
