@@ -1,6 +1,6 @@
-﻿using CargoGateway.Core.DTO;
+﻿using CargoGateway.Application.DTO;
 
-namespace CargoGateway.Core.Interfaces;
+namespace CargoGateway.Application.Interfaces;
 
 public interface ICargoService
 {

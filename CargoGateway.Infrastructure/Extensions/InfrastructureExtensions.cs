@@ -1,5 +1,6 @@
 ﻿using Cargo.Libraries.Logistics.Models.Interfaces;
-using CargoGateway.Core.Interfaces;
+using CargoGateway.Application.Interfaces;
+using CargoGateway.Application.Mapping;
 using CargoGateway.Infrastructure.Persistence;
 using CargoGateway.Infrastructure.Persistence.Repositories;
 using CargoGateway.Infrastructure.Services;
@@ -12,9 +13,7 @@ namespace CargoGateway.Infrastructure.Extensions;
 
 public static class InfrastructureExtensions
 {
-    public static IServiceCollection AddInfrastructure(
-        this IServiceCollection services, 
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection") 
                                ?? Environment.GetEnvironmentVariable("CONNECTION_STRING") 
@@ -24,6 +23,7 @@ public static class InfrastructureExtensions
             options.UseNpgsql(connectionString));
         
         services.AddScoped<ISearchRepository, SearchRepository>();
+        services.AddScoped<ICargoMapper, CargoMapper>();
         
         services.AddHttpClient<ICargoService, ExternalCargoService>((provider, client) => 
         {

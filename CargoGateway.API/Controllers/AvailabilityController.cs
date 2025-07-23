@@ -1,5 +1,5 @@
-﻿using CargoGateway.Core.DTO;
-using CargoGateway.Core.Interfaces;
+﻿using CargoGateway.Application.DTO;
+using CargoGateway.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CargoGateway.API.Controllers;

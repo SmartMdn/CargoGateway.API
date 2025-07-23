@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CargoGateway.Core.Extensions;
+namespace CargoGateway.Application.Extensions;
 
 public static class ServiceCollectionExtensions
 {

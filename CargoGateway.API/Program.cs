@@ -1,4 +1,4 @@
-using CargoGateway.Core.Extensions;
+using CargoGateway.Application.Extensions;
 using CargoGateway.Infrastructure.Extensions;
 using CargoGateway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
