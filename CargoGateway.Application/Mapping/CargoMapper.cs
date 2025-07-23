@@ -1,4 +1,4 @@
-using Cargo.Libraries.Logistics.Models.Entities;
+using Cargo.Libraries.Logistics.Models.Models;
 using CargoGateway.Application.DTO;
 using CargoGateway.Application.Interfaces;
 
@@ -6,7 +6,7 @@ namespace CargoGateway.Application.Mapping;
 
 public class CargoMapper : ICargoMapper
 {
-    public SearchEntity MapToSearchEntity(AvailabilitySearchRequest request, AvailabilityResponseModel availability) =>
+    public Search MapToSearchEntity(AvailabilitySearchRequest request, AvailabilityResponseModel availability) =>
         new()
         {
             Id = Guid.NewGuid(),
@@ -17,35 +17,35 @@ public class CargoMapper : ICargoMapper
             Shipments = availability.Shipments.Select(MapToShipmentEntity).ToList()
         };
 
-    public AvailabilityResponseModel MapToResponseModel(SearchEntity searchEntity) =>
+    public AvailabilityResponseModel MapToResponseModel(Search searchEntity) =>
         new()
         {
             Shipments = searchEntity.Shipments.Select(MapToShipment).ToList()
         };
 
-    private ShipmentEntity MapToShipmentEntity(Shipment shipment) =>
+    private Shipment MapToShipmentEntity(ShipmentDTO shipmentDto) =>
         new()
         {
             Id = Guid.NewGuid(),
-            CarrierCode = shipment.CarrierCode,
-            FlightNumber = shipment.FlightNumber,
-            CargoType = shipment.CargoType,
-            Legs = shipment.Legs.Select(MapToLegEntity).ToList()
+            CarrierCode = shipmentDto.CarrierCode,
+            FlightNumber = shipmentDto.FlightNumber,
+            CargoType = shipmentDto.CargoType,
+            Legs = shipmentDto.Legs.Select(MapToLegEntity).ToList()
         };
 
-    private LegEntity MapToLegEntity(Leg leg) =>
+    private Leg MapToLegEntity(LegDTO legDto) =>
         new()
         {
             Id = Guid.NewGuid(),
-            DepartureLocation = leg.DepartureLocation,
-            ArrivalLocation = leg.ArrivalLocation,
-            DepartureDate = leg.DepartureDate,
-            DepartureTime = leg.DepartureTime,
-            ArrivalDate = leg.ArrivalDate,
-            ArrivalTime = leg.ArrivalTime
+            DepartureLocation = legDto.DepartureLocation,
+            ArrivalLocation = legDto.ArrivalLocation,
+            DepartureDate = legDto.DepartureDate,
+            DepartureTime = legDto.DepartureTime,
+            ArrivalDate = legDto.ArrivalDate,
+            ArrivalTime = legDto.ArrivalTime
         };
 
-    private Shipment MapToShipment(ShipmentEntity shipmentEntity) =>
+    private ShipmentDTO MapToShipment(Shipment shipmentEntity) =>
         new()
         {
             CarrierCode = shipmentEntity.CarrierCode,
@@ -54,7 +54,7 @@ public class CargoMapper : ICargoMapper
             Legs = shipmentEntity.Legs.Select(MapToLeg).ToList()
         };
 
-    private Leg MapToLeg(LegEntity legEntity) =>
+    private LegDTO MapToLeg(Leg legEntity) =>
         new()
         {
             DepartureLocation = legEntity.DepartureLocation,

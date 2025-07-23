@@ -1,18 +1,18 @@
-﻿using Cargo.Libraries.Logistics.Models.Entities;
-using Cargo.Libraries.Logistics.Models.Interfaces;
+﻿using Cargo.Libraries.Logistics.Models.Interfaces;
+using Cargo.Libraries.Logistics.Models.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CargoGateway.Infrastructure.Persistence.Repositories;
 
 public class SearchRepository(ApplicationDbContext db) : ISearchRepository
 {
-    public async Task AddSearchResultAsync(SearchEntity search)
+    public async Task AddSearchResultAsync(Search search)
     {
         db.SearchEntities.Add(search);
         await db.SaveChangesAsync();
     }
 
-    public async Task<SearchEntity?> FindRecentSearchAsync(string from, string to, DateOnly date, TimeSpan maxAge)
+    public async Task<Search?> FindRecentSearchAsync(string from, string to, DateOnly date, TimeSpan maxAge)
     {
         var cutoffTime = DateTime.UtcNow - maxAge;
         

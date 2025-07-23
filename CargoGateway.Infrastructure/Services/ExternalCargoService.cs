@@ -1,10 +1,8 @@
 using System.Net.Http.Json;
-using Cargo.Libraries.Logistics.Models.Entities;
 using Cargo.Libraries.Logistics.Models.Interfaces;
 using CargoGateway.Application.DTO;
 using CargoGateway.Application.Exceptions;
 using CargoGateway.Application.Interfaces;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 
 namespace CargoGateway.Infrastructure.Services;
@@ -15,7 +13,7 @@ public class ExternalCargoService(HttpClient httpClient, ISearchRepository repos
 
     public async Task<AvailabilityResponseModel> SearchAsync(AvailabilitySearchRequest request)
     {
-        logger.LogInformation("Searching cargo: {From} -> {To} on {Date}", request.From, request.To, request.DateString);
+        logger.LogInformation("Searching cargo: {From} -> {To} on {Date}", request.From, request.To, request.Date);
         
         // Check cache first
         var cachedResult = await repository.FindRecentSearchAsync(request.From, request.To, request.Date, CacheMaxAge);
@@ -42,7 +40,7 @@ public class ExternalCargoService(HttpClient httpClient, ISearchRepository repos
         {
             from = request.From,
             to = request.To,
-            date = request.DateString
+            date = request.Date
         });
         
         if (!response.IsSuccessStatusCode)
@@ -59,7 +57,7 @@ public class ExternalCargoService(HttpClient httpClient, ISearchRepository repos
 
         try
         {
-            var availability = JsonConvert.DeserializeObject<AvailabilityResponseModel>(content) 
+            var availability = await response.Content.ReadFromJsonAsync<AvailabilityResponseModel>() 
                 ?? throw new CargoServiceException("Deserialization returned null");
             
             if (availability.Shipments == null)
@@ -68,10 +66,9 @@ public class ExternalCargoService(HttpClient httpClient, ISearchRepository repos
             logger.LogInformation("Retrieved {Count} shipments", availability.Shipments.Count);
             return availability;
         }
-        catch (JsonException ex)
+        catch (System.Text.Json.JsonException ex)
         {
-            logger.LogError(ex, "JSON deserialization failed");
-            throw new CargoServiceException($"Invalid JSON response: {ex.Message}", ex);
+            throw new CargoServiceException("Failed to deserialize external API response", ex);
         }
     }
 }
