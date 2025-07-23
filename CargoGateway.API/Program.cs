@@ -1,3 +1,5 @@
+using CargoGateway.Application.Extensions;
+using CargoGateway.Domain.Extensions;
 using CargoGateway.Infrastructure.Extensions;
 using CargoGateway.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,8 @@ builder.Services.AddControllers()
     });
 
 builder.Services
+    .AddApplication(builder.Configuration)
+    .AddDomain(builder.Configuration)
     .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddLogging(logging => 

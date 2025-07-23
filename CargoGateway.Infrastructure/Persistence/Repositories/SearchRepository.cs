@@ -1,28 +1,41 @@
-﻿using Cargo.Libraries.Logistics.Models.Interfaces;
-using Cargo.Libraries.Logistics.Models.Models;
+﻿using Cargo.Libraries.Logistics.Models.Models;
+using CargoGateway.Domain.Abstractions;
+using CargoGateway.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CargoGateway.Infrastructure.Persistence.Repositories;
 
-public class SearchRepository(ApplicationDbContext db) : ISearchRepository
+public class SearchRepository : ISearchRepository
 {
-    public async Task AddSearchResultAsync(Search search)
+    private readonly ApplicationDbContext _db;
+
+    public SearchRepository(ApplicationDbContext db)
     {
-        db.SearchEntities.Add(search);
-        await db.SaveChangesAsync();
+        _db = db;
     }
 
-    public async Task<Search?> FindRecentSearchAsync(string from, string to, DateOnly date, TimeSpan maxAge)
+    public async Task<Search?> FindBySpecificationAsync(
+        ISearchSpecification specification,
+        string from,
+        string to,
+        DateOnly date)
     {
-        var cutoffTime = DateTime.UtcNow - maxAge;
-        
-        return await db.SearchEntities
-            .Include(s => s.Shipments)
+        var query = await _db.SearchEntities
+            .Include(s=> s.Shipments)
                 .ThenInclude(sh => sh.Legs)
-            .FirstOrDefaultAsync(s => 
-                s.From == from && 
-                s.To == to && 
-                s.Date == date && 
-                s.CreatedAtUtc <= cutoffTime);
+            .Where(s=>
+                s.From == from &&
+                s.To == to &&
+                s.Date == date)
+            .ToListAsync();
+        
+        return query.FirstOrDefault(s => specification.IsSatisfiedBy(from, to, date, s.CreatedAtUtc));
     }
+
+    public async Task SaveAsync(Search search)
+    {
+        _db.SearchEntities.Add(search);
+        await _db.SaveChangesAsync();
+    }
+    
 }

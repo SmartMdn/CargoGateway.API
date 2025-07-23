@@ -7,34 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace CargoGateway.Infrastructure.Services;
 
-public class ExternalCargoService(HttpClient httpClient, ISearchRepository repository, ILogger<ExternalCargoService> logger, ICargoMapper cargoMapper) : ICargoService
+public class ExternalCargoClient(HttpClient httpClient, ILogger<ExternalCargoClient> logger) : IExternalCargoClient
 {
     private static readonly TimeSpan CacheMaxAge = TimeSpan.FromMinutes(15);
 
-    public async Task<AvailabilityResponseModel> SearchAsync(AvailabilitySearchRequest request)
-    {
-        logger.LogInformation("Searching cargo: {From} -> {To} on {Date}", request.From, request.To, request.Date);
-        
-        // Check cache first
-        var cachedResult = await repository.FindRecentSearchAsync(request.From, request.To, request.Date, CacheMaxAge);
-        if (cachedResult != null)
-        {
-            logger.LogInformation("Cache hit from {CreatedAt}", cachedResult.CreatedAtUtc);
-            return cargoMapper.MapToResponseModel(cachedResult);
-        }
-        
-        // Make external API call
-        logger.LogInformation("Cache miss - calling external API");
-        var availability = await CallExternalApiAsync(request);
-        
-        // Save to cache and return
-        var searchEntity = cargoMapper.MapToSearchEntity(request, availability);
-        await repository.AddSearchResultAsync(searchEntity);
-        
-        return availability;
-    }
-
-    private async Task<AvailabilityResponseModel> CallExternalApiAsync(AvailabilitySearchRequest request)
+    public async Task<AvailabilityResponseModel> SearchAvailabilityAsync(AvailabilitySearchRequest request)
     {
         var response = await httpClient.PostAsJsonAsync("availability/search", new 
         {
@@ -58,7 +35,7 @@ public class ExternalCargoService(HttpClient httpClient, ISearchRepository repos
         try
         {
             var availability = await response.Content.ReadFromJsonAsync<AvailabilityResponseModel>() 
-                ?? throw new CargoServiceException("Deserialization returned null");
+                               ?? throw new CargoServiceException("Deserialization returned null");
             
             if (availability.Shipments == null)
                 throw new CargoServiceException("Response missing shipments data");

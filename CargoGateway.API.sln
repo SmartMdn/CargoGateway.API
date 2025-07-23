@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.Application", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.Infrastructure", "CargoGateway.Infrastructure\CargoGateway.Infrastructure.csproj", "{C4CDFD26-8969-456B-BC49-B1763072310D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CargoGateway.Domain", "CargoGateway.Domain\CargoGateway.Domain.csproj", "{C66BC3DF-9968-4BC7-94AA-8B07FE1AFC5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{C4CDFD26-8969-456B-BC49-B1763072310D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4CDFD26-8969-456B-BC49-B1763072310D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4CDFD26-8969-456B-BC49-B1763072310D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C66BC3DF-9968-4BC7-94AA-8B07FE1AFC5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C66BC3DF-9968-4BC7-94AA-8B07FE1AFC5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C66BC3DF-9968-4BC7-94AA-8B07FE1AFC5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C66BC3DF-9968-4BC7-94AA-8B07FE1AFC5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

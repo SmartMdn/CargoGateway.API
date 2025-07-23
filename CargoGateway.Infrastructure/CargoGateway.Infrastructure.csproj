@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CargoGateway.Application\CargoGateway.Application.csproj" />
+      <ProjectReference Include="..\CargoGateway.Domain\CargoGateway.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

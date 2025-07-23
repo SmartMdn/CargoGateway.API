@@ -1,6 +1,5 @@
-﻿using Cargo.Libraries.Logistics.Models.Interfaces;
-using CargoGateway.Application.Interfaces;
-using CargoGateway.Application.Mapping;
+﻿using CargoGateway.Application.Interfaces;
+using CargoGateway.Domain.Repositories;
 using CargoGateway.Infrastructure.Persistence;
 using CargoGateway.Infrastructure.Persistence.Repositories;
 using CargoGateway.Infrastructure.Services;
@@ -22,16 +21,17 @@ public static class InfrastructureExtensions
         services.AddDbContext<ApplicationDbContext>(options => 
             options.UseNpgsql(connectionString));
         
-        services.AddScoped<ISearchRepository, SearchRepository>();
-        services.AddScoped<ICargoMapper, CargoMapper>();
-        
-        services.AddHttpClient<ICargoService, ExternalCargoService>((provider, client) => 
+        services.AddHttpClient<IExternalCargoClient, ExternalCargoClient>((provider, client) => 
         {
-            var config = provider.GetRequiredService<IConfiguration>();
-            client.BaseAddress = new Uri(config["CargoApi:BaseUrl"] ?? "http://localhost:5002/");
+            var baseUrl = configuration["CargoApi:BaseUrl"] 
+                          ?? throw new InvalidOperationException("CargoApi:BaseUrl is not configured");
+            client.BaseAddress = new Uri(baseUrl);
             client.Timeout = TimeSpan.FromSeconds(30);
         });
+
+        services.AddScoped<ISearchRepository, SearchRepository>();
         
         return services;
     }
+
 }
