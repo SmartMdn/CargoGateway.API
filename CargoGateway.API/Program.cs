@@ -38,6 +38,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddHttpClient<IExternalCargoClient, ExternalCargoClient>((provider, client) =>
 {
+                                /// вынести в options не обращаться к аппсеттингу
     var baseUrl = builder.Configuration["CargoApi:BaseUrl"]
                   ?? throw new InvalidOperationException("CargoApi:BaseUrl is not configured");
     client.BaseAddress = new Uri(baseUrl);
