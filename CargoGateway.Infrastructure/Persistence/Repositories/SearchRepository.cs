@@ -1,41 +1,42 @@
-﻿using Cargo.Libraries.Logistics.Models.Models;
+using Cargo.Libraries.Logistics.Models.Models;
 using CargoGateway.Domain.Abstractions;
 using CargoGateway.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CargoGateway.Infrastructure.Persistence.Repositories;
 
-public class SearchRepository : ISearchRepository
+public class SearchRepository(ApplicationDbContext db) : ISearchRepository
 {
-    private readonly ApplicationDbContext _db;
-
-    public SearchRepository(ApplicationDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task<Search?> FindBySpecificationAsync(
         ISearchSpecification specification,
         string from,
         string to,
         DateOnly date)
     {
-        var query = await _db.SearchEntities
-            .Include(s=> s.Shipments)
-                .ThenInclude(sh => sh.Legs)
-            .Where(s=>
+        var query = db.SearchEntities
+            .Include(s => s.Shipments)
+            .ThenInclude(sh => sh.Legs)
+            .Where(s =>
                 s.From == from &&
                 s.To == to &&
-                s.Date == date)
-            .ToListAsync();
-        
-        return query.FirstOrDefault(s => specification.IsSatisfiedBy(from, to, date, s.CreatedAtUtc));
+                s.Date == date);
+
+        // Apply cache policy filtering at database level for RecentSearchSpecification
+        if (specification is RecentSearchSpecification recentSpec)
+        {
+            var cutoffTime = DateTime.UtcNow - recentSpec.MaxAge;
+            query = query.Where(s => s.CreatedAtUtc >= cutoffTime);
+        }
+
+        // Single database call with optimal filtering
+        return await query
+            .OrderByDescending(s => s.CreatedAtUtc)
+            .FirstOrDefaultAsync();
     }
 
     public async Task SaveAsync(Search search)
     {
-        _db.SearchEntities.Add(search);
-        await _db.SaveChangesAsync();
+        db.SearchEntities.Add(search);
+        await db.SaveChangesAsync();
     }
-    
 }

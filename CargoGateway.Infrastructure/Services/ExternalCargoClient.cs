@@ -9,8 +9,6 @@ namespace CargoGateway.Infrastructure.Services;
 
 public class ExternalCargoClient(HttpClient httpClient, ILogger<ExternalCargoClient> logger) : IExternalCargoClient
 {
-    private static readonly TimeSpan CacheMaxAge = TimeSpan.FromMinutes(15);
-
     public async Task<AvailabilityResponseModel> SearchAvailabilityAsync(AvailabilitySearchRequest request)
     {
         var response = await httpClient.PostAsJsonAsync("availability/search", new 
@@ -19,28 +17,27 @@ public class ExternalCargoClient(HttpClient httpClient, ILogger<ExternalCargoCli
             to = request.To,
             date = request.Date
         });
+        var content = response.Content;
         
         if (!response.IsSuccessStatusCode)
         {
-            var errorContent = await response.Content.ReadAsStringAsync();
+            var errorContent = await content.ReadAsStringAsync();
+            
             logger.LogError("API error: {StatusCode} - {Content}", response.StatusCode, errorContent);
+            
             throw new CargoServiceException($"API call failed with status: {response.StatusCode}");
         }
         
-        var content = await response.Content.ReadAsStringAsync();
-        
-        if (string.IsNullOrWhiteSpace(content))
-            throw new CargoServiceException("Empty response from cargo service");
-
         try
         {
-            var availability = await response.Content.ReadFromJsonAsync<AvailabilityResponseModel>() 
+            var availability = await content.ReadFromJsonAsync<AvailabilityResponseModel>() 
                                ?? throw new CargoServiceException("Deserialization returned null");
             
             if (availability.Shipments == null)
                 throw new CargoServiceException("Response missing shipments data");
             
             logger.LogInformation("Retrieved {Count} shipments", availability.Shipments.Count);
+            
             return availability;
         }
         catch (System.Text.Json.JsonException ex)

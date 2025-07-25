@@ -1,30 +1,49 @@
-using CargoGateway.Application.Extensions;
-using CargoGateway.Domain.Extensions;
-using CargoGateway.Infrastructure.Extensions;
+using CargoGateway.Application.Configuration;
+using CargoGateway.Application.Interfaces;
+using CargoGateway.Application.Mapping;
+using CargoGateway.Application.Services;
+using CargoGateway.Application.UseCases;
+using CargoGateway.Domain.Abstractions;
+using CargoGateway.Domain.Repositories;
 using CargoGateway.Infrastructure.Persistence;
+using CargoGateway.Infrastructure.Persistence.Repositories;
+using CargoGateway.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options => 
-    {
-        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.IsoDateTimeConverter());
-        
-    });
+// Configure cache options
+builder.Services.Configure<CacheOptions>(
+    builder.Configuration.GetSection(CacheOptions.SectionName));
 
-builder.Services
-    .AddApplication(builder.Configuration)
-    .AddDomain(builder.Configuration)
-    .AddInfrastructure(builder.Configuration);
+// Application services
+builder.Services.AddScoped<ICargoService, CargoService>();
+builder.Services.AddScoped<ICacheService, CacheService>();
+builder.Services.AddScoped<ICargoMapper, CargoMapper>();
 
-builder.Services.AddLogging(logging => 
+// Use Cases
+builder.Services.AddScoped<ISearchCargoUseCase, SearchCargoUseCase>();
+
+// Cache policy with configuration
+builder.Services.AddSingleton<ICachePolicy>(provider =>
 {
-    logging.AddConsole();
-    logging.AddDebug();
+    var cacheOptions = builder.Configuration.GetSection(CacheOptions.SectionName).Get<CacheOptions>() 
+                      ?? new CacheOptions();
+    return new FixedTimeCachePolicy(cacheOptions.DefaultCacheDuration);
 });
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                       ?? throw new InvalidOperationException("Connection string not found in configuration");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(connectionString));
+builder.Services.AddHttpClient<IExternalCargoClient, ExternalCargoClient>((provider, client) =>
+{
+    var baseUrl = builder.Configuration["CargoApi:BaseUrl"]
+                  ?? throw new InvalidOperationException("CargoApi:BaseUrl is not configured");
+    client.BaseAddress = new Uri(baseUrl);
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
 
 var app = builder.Build();
 

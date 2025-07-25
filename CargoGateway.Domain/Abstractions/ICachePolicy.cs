@@ -14,5 +14,4 @@ public class FixedTimeCachePolicy(TimeSpan maxAge) : ICachePolicy
     {
         return DateTime.UtcNow - createdAtUtc <= MaxAge;
     }
-
 }

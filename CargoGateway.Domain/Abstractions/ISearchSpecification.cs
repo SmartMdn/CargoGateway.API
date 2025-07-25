@@ -1,4 +1,4 @@
-﻿namespace CargoGateway.Domain.Abstractions;
+namespace CargoGateway.Domain.Abstractions;
 
 public interface ISearchSpecification
 {
@@ -8,6 +8,8 @@ public interface ISearchSpecification
 public class RecentSearchSpecification : ISearchSpecification
 {
     private readonly ICachePolicy _cachePolicy;
+    
+    public TimeSpan MaxAge => _cachePolicy.MaxAge;
     
     public RecentSearchSpecification(ICachePolicy cachePolicy)
     {
