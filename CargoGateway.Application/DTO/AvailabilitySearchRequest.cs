@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CargoGateway.Application.DTO;
 
@@ -7,22 +7,15 @@ public class AvailabilitySearchRequest
 {
         [Required]
         [StringLength(10, MinimumLength = 3)]
-        [JsonProperty("from")]
+        [JsonPropertyName("from")]
         public string From { get; set; } = string.Empty;
 
         [Required]
         [StringLength(10, MinimumLength = 3)]
-        [JsonProperty("to")]
+        [JsonPropertyName("to")]
         public string To { get; set; } = string.Empty;
 
         [Required]
-        [JsonProperty("date")]
-        public string DateString { get; set; } = string.Empty; // Изменено на string
-
-        [JsonIgnore]
-        public DateOnly Date
-        {
-                get => DateOnly.Parse(DateString);
-                set => DateString = value.ToString("yyyy-MM-dd");
-        }
+        [JsonPropertyName("date")]
+        public DateOnly Date { get; set; }
 }

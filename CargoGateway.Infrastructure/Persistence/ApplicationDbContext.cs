@@ -1,33 +1,33 @@
-﻿using Cargo.Libraries.Logistics.Models.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Cargo.Libraries.Logistics.Models.Models;
 
 namespace CargoGateway.Infrastructure.Persistence;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-    public DbSet<SearchEntity> SearchEntities { get; set; }
-    public DbSet<ShipmentEntity> ShipmentEntities { get; set; }
-    public DbSet<LegEntity> LegEntities { get; set; }
+    public DbSet<Search> SearchEntities { get; set; }
+    public DbSet<Shipment> ShipmentEntities { get; set; }
+    public DbSet<Leg> LegEntities { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         modelBuilder.UseSerialColumns();
-        modelBuilder.Entity<SearchEntity>(entity =>
+        modelBuilder.Entity<Search>(entity =>
         {
             entity.HasKey(x => x.Id);
             entity.Property(x => x.Date).HasColumnType("date");
         });
-        modelBuilder.Entity<ShipmentEntity>(entity =>
+        modelBuilder.Entity<Shipment>(entity =>
         {
             entity.HasKey(x => x.Id);
             entity.HasOne(x => x.Search)
                 .WithMany(x => x.Shipments)
                 .HasForeignKey(x => x.SearchId);
         });
-        modelBuilder.Entity<LegEntity>(entity =>
+        modelBuilder.Entity<Leg>(entity =>
         {
             entity.HasKey(x => x.Id);
             entity.Property(x=>x.DepartureDate).HasColumnType("date");
